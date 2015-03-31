@@ -17,6 +17,12 @@ public class MyLog4jExample {
     private void start() {
 	logger.debug("Hello this is an debug message");
 	logger.info("Hello this is an info message");
-    }
 
+	try {
+	    throw new ArithmeticException("Divison");
+	} catch (final ArithmeticException ae) {
+	    logger.error("ArithmeticException caused by " + ae.getMessage(), ae);
+	}
+
+    }
 }

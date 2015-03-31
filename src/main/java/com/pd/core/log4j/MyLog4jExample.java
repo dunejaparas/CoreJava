@@ -7,7 +7,7 @@ public class MyLog4jExample {
     private final Logger logger;
 
     public MyLog4jExample() {
-	logger = Logger.getLogger("My component logger");
+	logger = Logger.getLogger(this.getClass().getName());
     }
 
     public static void main(final String args[]) {
@@ -15,8 +15,8 @@ public class MyLog4jExample {
     }
 
     private void start() {
-	logger.debug("PARAS");
-
+	logger.debug("Hello this is an debug message");
+	logger.info("Hello this is an info message");
     }
 
 }

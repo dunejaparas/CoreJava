@@ -1,10 +1,14 @@
 package com.pd.core.log4j;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 public class MyLog4jExample {
 
     private final Logger logger;
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 
     public MyLog4jExample() {
 	logger = Logger.getLogger(this.getClass().getName());
@@ -15,7 +19,14 @@ public class MyLog4jExample {
     }
 
     private void start() {
-	logger.debug("Hello this is an debug message");
+
+	final Date start = new Date();
+	logger.info("Modified : " + formatter.format(start));
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("Hello this is an debug message");
+	}
+
 	logger.info("Hello this is an info message");
 
 	try {
@@ -24,5 +35,11 @@ public class MyLog4jExample {
 	    logger.error("ArithmeticException caused by " + ae.getMessage(), ae);
 	}
 
+	final Date end = new Date();
+	logger.info("Modified : " + formatter.format(end));
+
+	final long diff = end.getTime() - start.getTime();
+	final long diffSeconds = diff / 1000 % 60;
+	logger.info("Modified diff in seconds : " + diffSeconds);
     }
 }

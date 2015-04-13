@@ -56,7 +56,7 @@ import com.pd.core.patterns.structural.flyweight.example.drawing.ShapeFactory.Sh
  * properties of Object is huge, making implementation of Factory class complex.
  *
  */
-public class DrawingClient extends JFrame {
+public class DrawingClientDemo extends JFrame {
 
     private static final long serialVersionUID = -1350200437285282550L;
     private final int WIDTH;
@@ -65,7 +65,7 @@ public class DrawingClient extends JFrame {
     private static final ShapeType shapes[] = { ShapeType.LINE, ShapeType.OVAL_FILL, ShapeType.OVAL_NOFILL };
     private static final Color colors[] = { Color.RED, Color.GREEN, Color.YELLOW };
 
-    public DrawingClient(final int width, final int height) {
+    public DrawingClientDemo(final int width, final int height) {
 	this.WIDTH = width;
 	this.HEIGHT = height;
 	final Container contentPane = getContentPane();
@@ -116,6 +116,6 @@ public class DrawingClient extends JFrame {
     }
 
     public static void main(final String[] args) {
-	new DrawingClient(500, 600);
+	new DrawingClientDemo(500, 600);
     }
 }

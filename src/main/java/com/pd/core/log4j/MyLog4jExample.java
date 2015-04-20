@@ -23,6 +23,12 @@ public class MyLog4jExample {
 	final Date start = new Date();
 	logger.info("Modified : " + formatter.format(start));
 
+	/*
+	 * The guard statement (checking isDebugEnabled()) is there to prevent
+	 * potentially expensive computation of the log message when it involves
+	 * invocation of the toString() methods of various objects and
+	 * concatenating the results.
+	 */
 	if (logger.isDebugEnabled()) {
 	    logger.debug("Hello this is an debug message");
 	}

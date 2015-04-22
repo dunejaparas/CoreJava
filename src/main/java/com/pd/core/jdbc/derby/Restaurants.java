@@ -46,14 +46,14 @@ public class Restaurants {
 	/*
 	 * create table restaurants(id integer, name varchar(20), city
 	 * varchar(50));
-	 *
+	 * 
 	 * insert into restaurants values (1, 'Irifunes', 'San Mateo');
-	 *
+	 * 
 	 * insert into restaurants values (2, 'Estradas', 'Daly City');
-	 *
+	 * 
 	 * insert into restaurants values (3, 'Prime Rib House', 'San
 	 * Francisco');
-	 *
+	 * 
 	 * select * from restaurants;
 	 */
 	try {
@@ -143,7 +143,7 @@ public class Restaurants {
 		stmt.close();
 	    }
 	    if (conn != null) {
-		DriverManager.getConnection(dbURL + ";shutdown=true");
+		DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		conn.close();
 	    }
 	} catch (final SQLException sqlExcept) {

@@ -2,6 +2,9 @@
 target/*
 log/*
 
+#ignore derby DB logs
+derby.log
+
 .classpath
 .project
 .settings/*

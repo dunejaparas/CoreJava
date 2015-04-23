@@ -1,3 +1,6 @@
+http://db.apache.org/derby/papers/DerbyTut/index.html
+
+
 #########################################################################
 
 		Derby JDBC database connection URL for embedded driver

@@ -3,6 +3,7 @@ package com.pd.core.jdbc.derby;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /*
  *
@@ -41,53 +42,22 @@ public class JdbcDerbyConnection {
 
     public static void main(final String[] args) {
 
-	Connection conn = null;
 	try {
-	    // connect method #1 - embedded driver
-	    final String dbURL1 = "jdbc:derby:codejava/webdb1;create=true";
-	    conn = DriverManager.getConnection(dbURL1);
-	    if (conn != null) {
-		System.out.println("Connected to database #1");
+	    // java -jar derbyrun.jar server start
+	    Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+
+	    final Connection conn3 = DriverManager.getConnection("jdbc:derby://localhost:1527/derbyDB;create=true");
+	    if (conn3 != null) {
+		System.out.println("Connected to persistence database, not in memory");
 	    }
-
-	    // The following two will not work without running the DB from
-	    // commandline
-	    // // connect method #2 - network client driver
-	    // final String dbURL2 =
-	    // "jdbc:derby://localhost/webdb2;create=true";
-	    // final String user = "tom";
-	    // final String password = "secret";
-	    // final Connection conn2 = DriverManager.getConnection(dbURL2,
-	    // user, password);
-	    // if (conn2 != null) {
-	    // System.out.println("Connected to database #2");
-	    // }
-	    //
-	    // // connect method #3 - network client driver
-	    // final String dbURL3 = "jdbc:derby://localhost/webdb3";
-	    // final Properties properties = new Properties();
-	    // properties.put("create", "true");
-	    // properties.put("user", "tom");
-	    // properties.put("password", "secret");
-	    //
-	    // final Connection conn3 = DriverManager.getConnection(dbURL3,
-	    // properties);
-	    // if (conn3 != null) {
-	    // System.out.println("Connected to database #3");
-	    // }
-
-	} catch (final SQLException ex) {
+	    final Statement stmt = conn3.createStatement();
+	    stmt.execute("create table restaurants(id integer, name varchar(20), city varchar(50))");
+	    stmt.execute("drop table restaurants");
+	    stmt.close();
+	    // java -jar derbyrun.jar server shutdown
+	} catch (final SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
 	    ex.printStackTrace();
 	} finally {
-	    try {
-		if (conn != null) {
-		    DriverManager.getConnection("jdbc:derby:;shutdown=true");
-		    conn.close();
-		    System.out.println("Connection closed");
-		}
-	    } catch (final SQLException sqlExcept) {
-
-	    }
 	}
     }
 }

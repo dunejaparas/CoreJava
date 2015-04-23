@@ -54,13 +54,25 @@ Example connection URLs:
 	
 ##################################################
 
-	Location of Derby DB
-	
+	Location of Derby DB (embedded)
+
 	 $JAVA_HOME\db\bin
-		
+	
 		C:\Program Files\Java\jdk1.7.0_75\db\bin
-	
-	
+
+	Location of Derby DB (installed)
+	cd DERBY_INSTALL_LOCATION/lib
+
+	<dependency>
+		<groupId>org.apache.derby</groupId>
+		<artifactId>derbyclient</artifactId>
+		<version>10.11.1.1</version>
+	</dependency>
+
+
+	$ java -jar derbyrun.jar server start &
+	$ java -jar derbyrun.jar server shutdown
+
 ##################################################
 ##################################################
 

@@ -2,8 +2,9 @@
 target/*
 log/*
 
-#ignore derby DB logs
+#ignore derby DB logs, DBases
 derby.log
+codejava/*
 
 .classpath
 .project

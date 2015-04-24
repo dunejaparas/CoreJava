@@ -3,21 +3,19 @@ package com.pd.core.jdbc.derby;
 import java.io.IOException;
 import java.sql.*;
 
-public class DerbyNetworkConnection {
+public class MetadataExample {
 
     private static Connection conn = null;
     private static Statement stmt = null;
 
     public static void main(final String[] args) {
-	new DerbyNetworkConnection().begin();
+	new MetadataExample().begin();
     }
 
     private void begin() {
 	try {
 	    DerbyUtils.startDB();
 	    createConnection();
-	    createTable();
-	    insertIntoTable();
 	    runSelectQuery();
 	    shutdownConnection();
 	    DerbyUtils.shutdownDB();
@@ -29,16 +27,6 @@ public class DerbyNetworkConnection {
 
 	}
 
-    }
-
-    private void insertIntoTable() throws SQLException {
-	// stmt.execute("insert into restaurants values (1, 'Irifunes', 'San Mateo')");
-	//
-	// stmt.execute("insert into restaurants values (2, 'Estradas', 'Daly City')");
-	//
-	// stmt.execute("insert into restaurants values (3, 'Prime Rib House', 'San Francisco')");
-
-	stmt.execute("select * from restaurants");
     }
 
     private static void runSelectQuery() {
@@ -67,24 +55,8 @@ public class DerbyNetworkConnection {
 	}
     }
 
-    private void createTable() throws SQLException {
-	try {
-	    if (stmt == null) {
-		stmt = conn.createStatement();
-	    }
-	    stmt.execute(StringBundle.CREATE_TABLE_SQL);
-	    System.out.println("Created table 'restaurants'");
-	} catch (final SQLException e) {
-	    if (DerbyUtils.tableAlreadyExists(e)) {
-		return;
-	    }
-	    e.printStackTrace();
-	}
-
-    }
-
     private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException,
-    SQLException {
+	    SQLException {
 	Class.forName(StringBundle.JDBC_EMBEDDED_DRIVER).newInstance();
 	// Get a connection
 	conn = DriverManager.getConnection(StringBundle.DB_URL);

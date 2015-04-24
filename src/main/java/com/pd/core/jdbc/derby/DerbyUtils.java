@@ -9,13 +9,10 @@ public class DerbyUtils {
     }
 
     public static boolean tableAlreadyExists(final SQLException e) {
-	boolean exists;
 	if (e.getSQLState().equals("X0Y32")) {
 	    System.out.println("***		" + e.getMessage());
-	    exists = true;
-	} else {
-	    exists = false;
+	    return true;
 	}
-	return exists;
+	return false;
     }
 }

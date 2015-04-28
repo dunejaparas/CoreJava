@@ -44,7 +44,7 @@ public class JdbcDerbyConnection {
 
 	try {
 	    // java -jar derbyrun.jar server start
-	    Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+	    Class.forName(StringBundle.JDBC_CLIENT_DRIVER).newInstance();
 
 	    final Connection conn3 = DriverManager.getConnection("jdbc:derby://localhost:1527/derbyDB;create=true");
 	    if (conn3 != null) {

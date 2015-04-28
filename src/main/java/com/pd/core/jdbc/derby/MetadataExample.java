@@ -123,7 +123,7 @@ public class MetadataExample {
 
     private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException,
     SQLException {
-	Class.forName(StringBundle.JDBC_EMBEDDED_DRIVER).newInstance();
+	Class.forName(StringBundle.JDBC_CLIENT_DRIVER).newInstance();
 	// Get a connection
 	conn = DriverManager.getConnection(StringBundle.DB_URL);
 	if (conn != null) {

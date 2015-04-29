@@ -6,6 +6,7 @@ public interface StringBundle {
     String JDBC_CLIENT_DRIVER = "org.apache.derby.jdbc.ClientDriver";
 
     String DB_URL = "jdbc:derby://localhost:1527/derbyDB;create=true";
+    String DB_URL_EMBEDDED = "jdbc:derby:memory:codejava/webdb;create=true";
 
     String CREATE_TABLE_SQL = "create table restaurants(id integer, name varchar(20), city varchar(50))";
 

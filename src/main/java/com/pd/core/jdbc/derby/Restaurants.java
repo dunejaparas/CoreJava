@@ -28,7 +28,7 @@ public class Restaurants {
      *
      * Shutdown the current database: jdbc:derby:;shutdown=true
      */
-    private static String dbURL = "jdbc:derby:memory:codejava/webdb;create=true";
+    private static String dbURL = StringBundle.DB_URL_EMBEDDED;
     private static String tableName = "restaurants";
     // jdbc Connection
     private static Connection conn = null;
@@ -46,14 +46,14 @@ public class Restaurants {
 	/*
 	 * create table restaurants(id integer, name varchar(20), city
 	 * varchar(50));
-	 * 
+	 *
 	 * insert into restaurants values (1, 'Irifunes', 'San Mateo');
-	 * 
+	 *
 	 * insert into restaurants values (2, 'Estradas', 'Daly City');
-	 * 
+	 *
 	 * insert into restaurants values (3, 'Prime Rib House', 'San
 	 * Francisco');
-	 * 
+	 *
 	 * select * from restaurants;
 	 */
 	try {

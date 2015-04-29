@@ -72,7 +72,19 @@ public class PreparedStatementExample {
 	System.out.println("executeUpdate:" + executeUpdate + " rows created");
     }
 
+    /*
+     * JDBC - Batch Processing JDBC
+     * 
+     * Drivers are not required to support this feature. You should use the
+     * DatabaseMetaData.supportsBatchUpdates() method to determine if the target
+     * database supports batch update processing. The method returns true if
+     * your JDBC driver supports this feature
+     */
     private void batchUpdate() throws SQLException {
+
+	final boolean supportsBatch = connection.getMetaData().supportsBatchUpdates();
+	System.out.println("\n\nDB Metadata :: supportsBatch \t:" + supportsBatch + "\n\n");
+
 	final String[][] values = { { "Sean", "Athlone Castle, Ireland" }, { "Max Burgers", "Stockholm" }, { "Piano Bar", "Athlone" }, { "More", "More" } };
 	for (final String[] value : values) {
 	    prepareStatement.setString(1, value[0]);

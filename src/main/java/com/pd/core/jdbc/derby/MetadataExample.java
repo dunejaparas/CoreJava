@@ -45,13 +45,12 @@ public class MetadataExample {
 	final String tableNamePattern = "RESTAURANTS";
 	final String columnNamePattern = null;
 
-	final ResultSet result = databaseMetaData.getColumns(catalog, schemaPattern, tableNamePattern,
-		columnNamePattern);
+	final ResultSet result = databaseMetaData.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
 
 	while (result.next()) {
 	    final String columnName = result.getString(4);
 	    final int columnType = result.getInt(5);
-	    System.out.println("Column name:'" + columnName + "' , column type:" + columnType);
+	    System.out.println("Column name:'" + columnName + "' , column type\t\t:" + columnType);
 	}
 
     }
@@ -66,7 +65,7 @@ public class MetadataExample {
 
 	while (result.next()) {
 	    final String tableName = result.getString(3);
-	    System.out.println("tableName :" + tableName);
+	    System.out.println("tableName \t\t:" + tableName);
 	}
     }
 
@@ -76,22 +75,26 @@ public class MetadataExample {
 
     private void getDbInfo() throws SQLException {
 	final int majorVersion = databaseMetaData.getDatabaseMajorVersion();
-	System.out.println("majorVersion :" + majorVersion);
+	System.out.println("majorVersion \t\t:" + majorVersion);
 
 	final int minorVersion = databaseMetaData.getDatabaseMinorVersion();
-	System.out.println("minorVersion :" + minorVersion);
+	System.out.println("minorVersion \t\t:" + minorVersion);
 
 	final String productName = databaseMetaData.getDatabaseProductName();
-	System.out.println("productName :" + productName);
+	System.out.println("productName \t\t:" + productName);
 
 	final String productVersion = databaseMetaData.getDatabaseProductVersion();
-	System.out.println("productVersion :" + productVersion);
+	System.out.println("productVersion \t\t:" + productVersion);
 
 	final int driverMajorVersion = databaseMetaData.getDriverMajorVersion();
-	System.out.println("driverMajorVersion :" + driverMajorVersion);
+	System.out.println("driverMajorVersion \t\t:" + driverMajorVersion);
 
 	final int driverMinorVersion = databaseMetaData.getDriverMinorVersion();
-	System.out.println("driverMinorVersion :" + driverMinorVersion);
+	System.out.println("driverMinorVersion \t\t:" + driverMinorVersion);
+
+	final boolean supportsBatch = databaseMetaData.supportsBatchUpdates();
+	System.out.println("supportsBatch \t\t:" + supportsBatch);
+	System.out.println("\n\n***********************************");
 
     }
 
@@ -121,8 +124,7 @@ public class MetadataExample {
 	}
     }
 
-    private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException,
-    SQLException {
+    private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 	Class.forName(StringBundle.JDBC_CLIENT_DRIVER).newInstance();
 	// Get a connection
 	conn = DriverManager.getConnection(StringBundle.DB_URL);

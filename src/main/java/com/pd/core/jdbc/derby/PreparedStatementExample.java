@@ -1,34 +1,36 @@
 package com.pd.core.jdbc.derby;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class PreparedStatementExample {
 
     /*
      * Q: What is the difference between execute, executeQuery, executeUpdate?
      * A:
-     * 
+     *
      * boolean execute(): Executes the any kind of SQL statement.
-     * 
+     *
      * RETURNS: true if the first result is a ResultSet object; false if the
      * first result is an update count or there is no result
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * ResultSet executeQuery(): This is used generally for reading the content
      * of the database. The output will be in the form of ResultSet. Generally
      * SELECT statement is used.
-     * 
+     *
      * RETURNS: a ResultSet object that contains the data produced by the query;
      * never null
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * int executeUpdate(): This is generally used for altering the databases.
      * Generally DROP TABLE or DATABASE, INSERT into TABLE, UPDATE TABLE, DELETE
      * from TABLE statements will be used in this. The output will be in the
      * form of int which denotes the number of rows affected by the query.
-     * 
+     *
      * RETURNS: either (1) the row count for SQL Data Manipulation Language
      * (DML) statements or (2) 0 for SQL statements that return nothing
      */
@@ -41,26 +43,26 @@ public class PreparedStatementExample {
 
     private void begin() {
 	try {
-	    createConnection();
-	    executeDDL(StringBundle.CREATE_TABLE_SQL_EatingJoints);
-	    prepareStatement();
+	    connection = DerbyUtils.loadDbDriverAndCreateConnection();
+	    DerbyUtils.executeDDL(connection, StringBundle.SQL_CREATE_TABLE_SQL_EatingJoints);
+	    prepareStatement = DerbyUtils.prepareStatement(connection, StringBundle.SQL_PREPARED_STATEMENT_INSERT);
 	    // use prepared insert statement
 	    insertValue();
 	    batchUpdate();
-	    runSelectQuery();
-	    executeDDL(StringBundle.DROP_TABLE_SQL_EatingJoints);
+	    DerbyUtils.runSelectQuery(connection, StringBundle.SQL_SELECT_ALL_FROM_EATING_JOINTS);
+	    DerbyUtils.executeDDL(connection, StringBundle.SQL_DROP_TABLE_SQL_EatingJoints);
 	} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} finally {
-	    closeConnection();
+	    DerbyUtils.closeConnection(connection);
 	}
 
     }
 
     /*
      * java.sql.SQLException:
-     * 
+     *
      * if all variables arent initialized: At least one parameter to the current
      * statement is uninitialized.
      */
@@ -73,69 +75,18 @@ public class PreparedStatementExample {
     }
 
     private void batchUpdate() throws SQLException {
-	final String[][] values = { { "Sean", "Athlone Castle, Ireland" }, { "Burger King", "Stockholm" }, { "Piano Bar", "Athlone" }, { "More", "More" } };
+	final String[][] values = { { "Sean", "Athlone Castle, Ireland" }, { "Max Burgers", "Stockholm" }, { "Piano Bar", "Athlone" }, { "More", "More" } };
 	for (final String[] value : values) {
 	    prepareStatement.setString(1, value[0]);
 	    prepareStatement.setString(2, value[1]);
 	    prepareStatement.addBatch();
 	}
 	final int[] executeUpdate = prepareStatement.executeBatch();
-	System.out.println("executeUpdate:" + executeUpdate.length + " rows created");
-    }
-
-    private void prepareStatement() throws SQLException {
-	if (connection != null) {
-	    prepareStatement = connection.prepareStatement("insert into EatingJoints(name, city) values (?,?) ");
+	int count = 0;
+	for (final int update : executeUpdate) {
+	    count += update;
 	}
-
+	System.out.println(String.format("execute Batch Update: %d rows created", count));
     }
 
-    private void closeConnection() {
-    }
-
-    private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-	// LOAD Driver
-	Class.forName(StringBundle.JDBC_CLIENT_DRIVER).newInstance();
-
-	connection = DriverManager.getConnection(StringBundle.DB_URL);
-    }
-
-    private void runSelectQuery() {
-	try {
-	    final Statement stmt = connection.createStatement();
-	    final ResultSet results = stmt.executeQuery(StringBundle.SELECT_ALL_FROM_EATING_JOINTS);
-	    final ResultSetMetaData rsmd = results.getMetaData();
-	    final int numberCols = rsmd.getColumnCount();
-	    for (int i = 1; i <= numberCols; i++) {
-		// print Column Names
-		System.out.print(rsmd.getColumnLabel(i) + "\t\t");
-	    }
-
-	    System.out.println("\n-------------------------------------------------");
-
-	    while (results.next()) {
-		final int id = results.getInt(1);
-		final String restName = results.getString(2);
-		final String cityName = results.getString(3);
-		System.out.println(id + "\t\t" + restName + "\t\t" + cityName);
-	    }
-	    results.close();
-	    stmt.close();
-	} catch (final SQLException sqlExcept) {
-	    sqlExcept.printStackTrace();
-	}
-    }
-
-    public void executeDDL(final String ddlString) {
-
-	try {
-	    final Statement stmt = connection.createStatement();
-	    stmt.execute(ddlString);
-	    stmt.close();
-	    // java -jar derbyrun.jar server shutdown
-	    System.out.println("SUCCESS: " + ddlString);
-	} catch (final SQLException ex) {
-	    ex.printStackTrace();
-	}
-    }
 }

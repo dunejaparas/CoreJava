@@ -1,7 +1,7 @@
 package com.pd.core.jdbc.derby;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.*;
 
 // import org.apache.derby.drda.NetworkServerControl;
 
@@ -58,5 +58,71 @@ public class DerbyUtils {
     public static void shutdownDB() throws IOException, InterruptedException {
 	executeCommand(SERVER_DERBY_SHUTDOWN);
 
+    }
+
+    public static void runSelectQuery(final Connection connection, final String query) {
+	try {
+	    final Statement stmt = connection.createStatement();
+	    final ResultSet results = stmt.executeQuery(query);
+	    final ResultSetMetaData rsmd = results.getMetaData();
+	    final int numberCols = rsmd.getColumnCount();
+	    for (int i = 1; i <= numberCols; i++) {
+		// print Column Names
+		System.out.print(rsmd.getColumnLabel(i) + "\t\t");
+	    }
+
+	    System.out.println("\n-------------------------------------------------");
+
+	    while (results.next()) {
+		final int id = results.getInt(1);
+		final String restName = results.getString(2);
+		final String cityName = results.getString(3);
+		System.out.println(id + "\t\t" + restName + "\t\t" + cityName);
+	    }
+	    results.close();
+	    stmt.close();
+	} catch (final SQLException sqlExcept) {
+	    sqlExcept.printStackTrace();
+	}
+    }
+
+    public static void loadJdbcClientDriver() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	// LOAD Driver
+	Class.forName(StringBundle.JDBC_CLIENT_DRIVER).newInstance();
+    }
+
+    public static Connection loadDbDriverAndCreateConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	loadJdbcClientDriver();
+	return DriverManager.getConnection(StringBundle.DB_URL);
+    }
+
+    public static void closeConnection(final Connection connection) {
+	try {
+	    if (connection != null) {
+		connection.close();
+	    }
+	} catch (final SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    public static PreparedStatement prepareStatement(final Connection connection, final String sqlForPreparedStatement) throws SQLException {
+	return connection.prepareStatement(sqlForPreparedStatement);
+
+    }
+
+    public static void executeDDL(final Connection connection, final String ddlString) {
+
+	try {
+	    final Statement stmt = connection.createStatement();
+	    stmt.execute(ddlString);
+	    stmt.close();
+	    System.out.println("**	SUCCESS		***	" + ddlString);
+	} catch (final SQLException ex) {
+	    System.out.println("****************************************");
+	    System.out.println("***		ERROR		********");
+	    System.out.println("****************************************");
+	    ex.printStackTrace();
+	}
     }
 }

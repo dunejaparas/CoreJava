@@ -60,32 +60,6 @@ public class DerbyUtils {
 
     }
 
-    public static void runSelectQuery(final Connection connection, final String query) {
-	try {
-	    final Statement stmt = connection.createStatement();
-	    final ResultSet results = stmt.executeQuery(query);
-	    final ResultSetMetaData rsmd = results.getMetaData();
-	    final int numberCols = rsmd.getColumnCount();
-	    for (int i = 1; i <= numberCols; i++) {
-		// print Column Names
-		System.out.print(rsmd.getColumnLabel(i) + "\t\t");
-	    }
-
-	    System.out.println("\n-------------------------------------------------");
-
-	    while (results.next()) {
-		final int id = results.getInt(1);
-		final String restName = results.getString(2);
-		final String cityName = results.getString(3);
-		System.out.println(id + "\t\t" + restName + "\t\t" + cityName);
-	    }
-	    results.close();
-	    stmt.close();
-	} catch (final SQLException sqlExcept) {
-	    sqlExcept.printStackTrace();
-	}
-    }
-
     public static void loadJdbcClientDriver() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 	// LOAD Driver
 	Class.forName(StringBundle.JDBC_CLIENT_DRIVER).newInstance();

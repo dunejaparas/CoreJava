@@ -1,8 +1,6 @@
 package com.pd.core.jdbc.derby;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PreparedStatementExample {
 
@@ -49,7 +47,7 @@ public class PreparedStatementExample {
 	    // use prepared insert statement
 	    insertValue();
 	    batchUpdate();
-	    DerbyUtils.runSelectQuery(connection, StringBundle.SQL_SELECT_ALL_FROM_EATING_JOINTS);
+	    runSelectQuery(StringBundle.SQL_SELECT_ALL_FROM_EATING_JOINTS);
 	    DerbyUtils.executeDDL(connection, StringBundle.SQL_DROP_TABLE_SQL_EatingJoints);
 	} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 	    // TODO Auto-generated catch block
@@ -89,4 +87,35 @@ public class PreparedStatementExample {
 	System.out.println(String.format("execute Batch Update: %d rows created", count));
     }
 
+    // Move this back to Prepared Statement, since the resultset is related to
+    // structure of table
+    private void runSelectQuery(final String query) {
+	try {
+	    final Statement stmt = connection.createStatement();
+	    final ResultSet results = stmt.executeQuery(query);
+	    final ResultSetMetaData rsmd = results.getMetaData();
+	    final int numberCols = rsmd.getColumnCount();
+	    for (int i = 1; i <= numberCols; i++) {
+		// print Column Names
+		System.out.print(rsmd.getColumnLabel(i) + "\t\t");
+	    }
+
+	    System.out.println("\n-------------------------------------------------");
+
+	    while (results.next()) {
+		// final String id = results.getString(1);
+		final int id = results.getInt(1);
+
+		// Invalid character string format for type int.
+		// if final String is assigned to int
+		final String restName = results.getString(2);
+		final String cityName = results.getString(3);
+		System.out.println(id + "\t\t" + restName + "\t\t" + cityName);
+	    }
+	    results.close();
+	    stmt.close();
+	} catch (final SQLException sqlExcept) {
+	    sqlExcept.printStackTrace();
+	}
+    }
 }

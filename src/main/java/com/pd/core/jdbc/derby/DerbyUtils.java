@@ -82,7 +82,10 @@ public class DerbyUtils {
 
     public static PreparedStatement prepareStatement(final Connection connection, final String sqlForPreparedStatement) throws SQLException {
 	return connection.prepareStatement(sqlForPreparedStatement);
+    }
 
+    public static PreparedStatement prepareStatement(final Connection connection, final String sqlPreparedStatementInsert, final int concurUpdatable) throws SQLException {
+	return connection.prepareStatement(sqlPreparedStatementInsert, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
     }
 
     public static void executeDDL(final Connection connection, final String ddlString) {
@@ -98,5 +101,18 @@ public class DerbyUtils {
 	    System.out.println("****************************************");
 	    ex.printStackTrace();
 	}
+    }
+
+    public static void getResultSetConcurrencyInfo(final ResultSet resultSet) throws SQLException {
+	final int rsConcurrency = resultSet.getConcurrency();
+	if (rsConcurrency == java.sql.ResultSet.CONCUR_READ_ONLY) {
+	    System.out.println("java.sql.ResultSet.CONCUR_READ_ONLY");
+	} else if (rsConcurrency == java.sql.ResultSet.CONCUR_UPDATABLE) {
+	    System.out.println("java.sql.ResultSet.CONCUR_UPDATABLE");
+	} else {
+	    // it is an error
+	    System.err.println("java.sql.ResultSet. XXXXX it is an error");
+	}
+
     }
 }

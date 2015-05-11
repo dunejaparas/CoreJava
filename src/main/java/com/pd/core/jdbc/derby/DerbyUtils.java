@@ -92,9 +92,9 @@ public class DerbyUtils {
 
 	try {
 	    final Statement stmt = connection.createStatement();
-	    stmt.execute(ddlString);
+	    final boolean execute = stmt.execute(ddlString);
 	    stmt.close();
-	    System.out.println("**	SUCCESS		***	" + ddlString);
+	    System.out.println(String.format("********* Was execution of %s a SUCCESS %s", ddlString, execute));
 	} catch (final SQLException ex) {
 	    System.out.println("****************************************");
 	    System.out.println("***		ERROR		********");

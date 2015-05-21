@@ -24,3 +24,4 @@ public class InheritanceExample {
 			.isAnnotationPresent(InheritedAnnotation.class));
     }
 }
+// whats this new issue

@@ -8,10 +8,15 @@ import org.apache.log4j.Logger;
 public class MyLog4jExample {
 
     private final Logger logger;
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
+    private static final SimpleDateFormat formatter = new SimpleDateFormat(
+	    "yyyy-MM-dd_HH-mm-ss_SSS");
 
     public MyLog4jExample() {
 	logger = Logger.getLogger(this.getClass().getName());
+
+	logger.info("class.getName()" + this.getClass().getName());
+	logger.info("class.getCanonicalName()" + this.getClass().getCanonicalName());
+	logger.info("class.getSimpleName()" + this.getClass().getSimpleName());
     }
 
     public static void main(final String args[]) {

@@ -14,8 +14,13 @@ public class MyLog4jExample {
     public MyLog4jExample() {
 	logger = Logger.getLogger(this.getClass().getName());
 
+	// INFO  MyLog4jExample:17 - class.getName()com.pd.core.log4j.MyLog4jExample
 	logger.info("class.getName()" + this.getClass().getName());
+	
+	// INFO  MyLog4jExample:18 - class.getCanonicalName()com.pd.core.log4j.MyLog4jExample
 	logger.info("class.getCanonicalName()" + this.getClass().getCanonicalName());
+	
+	// INFO  MyLog4jExample:19 - class.getSimpleName()MyLog4jExample
 	logger.info("class.getSimpleName()" + this.getClass().getSimpleName());
     }
 

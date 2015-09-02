@@ -5,7 +5,7 @@ package com.pd.core;
  *
  */
 public class App {
-    public static void main(String[] args) {
-	System.out.println("Hello World!");
-    }
+	public static void main(final String[] args) {
+		System.out.println("Welcome to my profile on LinkedIn!");
+	}
 }

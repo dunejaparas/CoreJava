@@ -1,6 +1,6 @@
 package com.pd.codelity;
 
-public class XXXXX {
+public class MathProblem {
 	public static void main(final String[] args) {
 
 		int a = 5, b = 7;
